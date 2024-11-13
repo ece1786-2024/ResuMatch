@@ -29,5 +29,3 @@ def get_resume_job_match_dataset(train_or_test="train"):
     df = pd.read_csv("hf://datasets/cnamuangtoun/resume-job-description-fit/" + splits[train_or_test])
 
     return df
-
-print(get_resume_industry_dataset())
