@@ -3,7 +3,7 @@ from datasets.FeatureDataClass import IndustryData, ExperienceLevelData
 
 def get_resume_features_dataset():
     """
-    Returns pandas dataframe with two columns:
+    Returns pandas dataframe with resume text column and feature columns:
         1. resume_text: Has resume text
         2...n feature1, feature2, ..., featuren
 
