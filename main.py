@@ -1,3 +1,5 @@
 from datasets import data
 
-print(data.get_resume_job_match_dataset())
+df = data.get_resume_features_dataset()
+
+print(df.head())
