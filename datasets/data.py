@@ -4,8 +4,12 @@ from datasets.FeatureDataClass import IndustryData, ExperienceLevelData
 def get_resume_features_dataset():
     """
     Returns pandas dataframe with two columns:
-        1. Industry: Has industry-like feature (eg: Accountant, Mechanical Engineer, etc)
-        2. resume_text: Has resume text
+        1. resume_text: Has resume text
+        2...n feature1, feature2, ..., featuren
+
+        Current Features:
+            1. Industry: Has industry-like feature (eg: Accountant, Mechanical Engineer, etc)
+            2. ExperienceLevel: One of {Entry, Junior, Mid, Senior, Executive}
     """
 
     industry = IndustryData()
