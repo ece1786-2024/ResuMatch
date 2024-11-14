@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from datasets.FeatureDataClass import IndustryData, ExperienceLevelData
 
@@ -12,23 +13,9 @@ def get_resume_features_dataset():
             2. ExperienceLevel: One of {Entry, Junior, Mid, Senior, Executive}
     """
 
-    industry = IndustryData()
-    experience_level = ExperienceLevelData()
-
-    features_to_join = [
-        industry,
-        experience_level
-    ]
-
-    merged_df = features_to_join[0].data
-
-    for feature in features_to_join[1:]:
-        merged_df = pd.merge(merged_df, feature.data, on='resume_text', how='left')
+    df = pd.read_csv(os.path.join('datasets', 'local_datasets', 'ResumeFeatures.csv'))
     
-    cols = [feature.name for feature in features_to_join]
-    cols.append("resume_text")
-
-    return merged_df[cols]
+    return df
 
 def get_resume_job_match_dataset(train_or_test="train"):
     """
