@@ -1,3 +1,4 @@
-from datasets import data
+from system_ui.ui import UI
 
-print(data.get_resume_job_match_dataset())
+ui = UI()
+ui.run()
