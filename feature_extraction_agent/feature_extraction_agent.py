@@ -1,21 +1,33 @@
 import pandas as pd
-from agent import Agent
+from agent.agent import Agent
 
 class FeatureExtractionAgent(Agent):
-    def __init__(self, name, sys_prompt, model="gpt-4", max_tokens=15):
-        super().__init__(name, sys_prompt, model, max_tokens)
+    def __init__(self, 
+                 name, 
+                 sys_prompt, 
+                 model="gpt-4o", 
+                 max_tokens=15,
+                 response_format={"type": "json_object"},
+                 temperature=0.5):
+        
+        super().__init__(name, model, max_tokens, response_format, temperature)
+        
+        self.sys_prompt=sys_prompt
 
-    def extract_features(self, text):
-        # Example method for feature extraction
-        additional_prompts = [{"role": "user", "content": text}]
-        response = self.generate_response(additional_prompts)
-        # Process the response to extract features
-        features = self._process_response(response)
-        return features
+    def extract_features(self, text, json_structure):
+       
+        prompt = f"Extract the following information from the text and format it into the specified JSON, four options for eperience level are entry, junior, senior, executive. The industry should reflect where their expertise and capabilities are most applicable or valuable, instead of the industry the company is in" \
+                 f" structure:\n\nText: {text}\n\nExpected JSON Structure: {json_structure}"
 
-    def _process_response(self, response):
-        # Logic here in case we want multiple of the same feature
-        return {"features": response["content"]}
+        messages=[
+                {"role": "system", "content": self.sys_prompt},
+                {"role": "user", "content": prompt}
+            ]
+        
+        
+        response = self.generate_response(messages)
+        return response
+
 
     def evaluate_dataset(self, df):
         """

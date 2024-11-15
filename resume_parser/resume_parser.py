@@ -4,11 +4,16 @@ import re
 import docx
 import pdfplumber
 from typing import Dict
-from .openai_api import OpenAIAPI
+from feature_extraction_agent.feature_extraction_agent import FeatureExtractionAgent
+
 
 class ResumeParser:
-    def __init__(self, api_key: str, model: str):
-        self.openai_api = OpenAIAPI(api_key, model)
+    def __init__(self, ):        
+        self.feature_extrator_agent = FeatureExtractionAgent(
+            name="feature_extractor",
+            sys_prompt="You are a helpful assistant for parsing resume.",
+            max_tokens=100
+        )
         self.default_json_structure = {
             "industry": "",
             "experience level": ""
@@ -25,7 +30,7 @@ class ResumeParser:
         if json_structure is None:
             json_structure = self.default_json_structure
 
-        formatted_data = self.openai_api.format_text_to_json(text, json_structure)
+        formatted_data = self.feature_extrator_agent.extract_features(text, json_structure)
         return formatted_data
 
     @staticmethod

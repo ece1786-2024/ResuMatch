@@ -1,19 +1,19 @@
+import os
 import pandas as pd
+from datasets.FeatureDataClass import IndustryData, ExperienceLevelData
 
-def get_resume_industry_dataset():
+def get_resume_features_dataset():
     """
-    Returns pandas dataframe with two columns:
-        1. Industry: Has industry-like feature (eg: Accountant, Mechanical Engineer, etc)
-        2. resume_text: Has resume text
-    """
-    df = pd.read_csv("hf://datasets/ahmedheakl/resume-atlas/train.csv")
+    Returns pandas dataframe with resume text column and feature columns:
+        1. resume_text: Has resume text
+        2...n feature1, feature2, ..., featuren
 
-    df = df.rename(
-        columns={
-            'Category': 'Industry',
-            'Text': 'resume_text',
-        }
-    )
+        Current Features:
+            1. Industry: Has industry-like feature (eg: Accountant, Mechanical Engineer, etc)
+            2. ExperienceLevel: One of {Entry, Junior, Mid, Senior, Executive}
+    """
+
+    df = pd.read_csv(os.path.join('datasets', 'local_datasets', 'ResumeFeatures.csv'))
     
     return df
 
