@@ -20,7 +20,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-# For Resume Parting
+# For Resume Parsing
 ```
 python -m resume_parser.main
 ```
