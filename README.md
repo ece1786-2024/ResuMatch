@@ -1,6 +1,28 @@
 # resumatch
 
 
-# Create environment
+# Create venv environment
 
-You should be able to run `conda env create --file environment.yml` and have the environment setup.
+## Step 1) Create the virtual environment - from python3.10
+```
+python3.10 -m venv venv
+```
+
+
+## Step 2) Activate the venv
+```
+source venv/bin/activate 
+```
+
+
+## Step 3) Install all our requirements
+```
+pip install -r requirements.txt
+```
+
+# For Resume Parsing
+```
+python -m resume_parser.main
+```
+
+

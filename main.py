@@ -1,5 +1,4 @@
-from datasets import data
+from system_ui.ui import UI
 
-df = data.get_resume_features_dataset()
-
-print(df.head())
+ui = UI()
+ui.run()
