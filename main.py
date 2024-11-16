@@ -1,4 +1,10 @@
-from resume_parser.core import ResumeParser
+from resume_parser.resume_parser import ResumeParser
+from datasets.data import ResumeFeaturesDataset, JobResumeMatchesDataset, LocationValidationDataset, ResumeValidationDataset
+
+print(ResumeFeaturesDataset.df.head())
+print(JobResumeMatchesDataset.df.head())
+print(LocationValidationDataset.df.head())
+print(ResumeValidationDataset.df.head())
 
 api_key = ""
 model = "gpt-4o"
