@@ -25,4 +25,20 @@ pip install -r requirements.txt
 python -m resume_parser.main
 ```
 
+# For evluating the matching_agent
+
+```
+source venv/bin/activate 
+```
+
+```
+pip install -r requirements.txt
+```
+
+```
+python -m  matching_agent.agent_evaluation
+```
+
+
+
 
