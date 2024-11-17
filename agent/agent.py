@@ -1,7 +1,10 @@
 from openai import OpenAI
 
 # Replace 'YOUR_API_KEY' with your actual OpenAI API key
-client = OpenAI(api_key="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")
+with open('api-key.txt', 'r') as f:
+  api_key = f.read()
+
+client = OpenAI(api_key=api_key)
 
 class Agent:
     def __init__(self, 

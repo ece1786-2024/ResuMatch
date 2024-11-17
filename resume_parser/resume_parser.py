@@ -14,10 +14,6 @@ class ResumeParser:
             sys_prompt="You are a helpful assistant for parsing resume.",
             max_tokens=100
         )
-        self.default_json_structure = {
-            "industry": "",
-            "experience level": ""
-        }
 
     def parse(self, file_path: str, json_structure: dict = None) -> Dict:
         if file_path.endswith('.pdf'):
