@@ -1,6 +1,8 @@
 import csv
 import json
+import pandas as pd
 from resume_parser.resume_parser import ResumeParser
+from matching_agent.matching_agent import MatchingAgent
 from jobspy import scrape_jobs
 
 # PATH_TO_RESUME = r"G:\job applications\Karanbir.s.brar.pdf"
@@ -38,8 +40,34 @@ jobs = scrape_jobs(
 
 # Save and display the results
 if jobs is not None and not jobs.empty:
-    print(f"Found {len(jobs)} jobs")
-    print(jobs.head())
+    #print(f"Found {len(jobs)} jobs")
+    #print(jobs.head())
     jobs.to_csv("jobs.csv", quoting=csv.QUOTE_NONNUMERIC, escapechar="\\", index=False)
 else:
     print("No jobs found.")
+
+df=pd.read_csv('jobs.csv')
+print(df.columns)
+matches=[]
+match_scores = {"Good Fit": 3, "Potential Fit": 2, "No fit": 1}
+job_agent = MatchingAgent(name="JobMatcher", sys_prompt="Match resumes with job descriptions.",model="gpt-4o")
+for index, row in df.iterrows():
+    job_description = row["description"]
+    #apllication_link = row[""]
+    # Get match result from agent
+    match_result = job_agent.evaluate_match(resume_text, job_description)
+    match_category = match_result["fit"]  # Extract the match category
+    
+    # Append job with its score
+    matches.append({
+        "Application_link": row["job_url"],
+        "match_category": match_category,
+        "score": match_scores.get(match_category, 0)
+    })
+
+# Sort matches by score in descending order
+top_matches = sorted(matches, key=lambda x: x["score"], reverse=True)[:5]
+
+for job in top_matches:
+    print(f"Match Category: {job['match_category']}, Score: {job['score']}")
+    print(f"application_link: {job['Application_link']}\n")

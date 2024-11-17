@@ -31,7 +31,7 @@ class ResumeParser:
             json_structure = self.default_json_structure
 
         formatted_data = self.feature_extrator_agent.extract_features(text, json_structure)
-        return formatted_data
+        return formatted_data,text
 
     @staticmethod
     def _extract_text_from_pdf(file_path: str) -> str:

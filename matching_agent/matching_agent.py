@@ -1,7 +1,7 @@
-from agent import Agent
+from agent.agent import Agent
 
 class MatchingAgent(Agent):
-    def __init__(self, name, sys_prompt, model="gpt-4", max_tokens=15):
+    def __init__(self, name, sys_prompt, model="gpt-4o", max_tokens=15):
         super().__init__(name, sys_prompt, model, max_tokens)
         self.match_categories = ["Good Fit", "Potential Fit", "No fit"]
 
