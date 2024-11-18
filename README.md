@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 # OpenAI API Key
 
-Put a file called ```api-key.txt` in this folder with your API key in it.
+Put a file called `api-key.txt` in this folder with your API key in it.
 
 # For Resume Parsing
 ```
