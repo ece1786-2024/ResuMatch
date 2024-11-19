@@ -8,14 +8,14 @@ from feature_extraction_agent.feature_extraction_agent import FeatureExtractionA
 
 
 class ResumeParser:
-    def __init__(self, ):        
+    def __init__(self):        
         self.feature_extrator_agent = FeatureExtractionAgent(
             name="feature_extractor",
-            sys_prompt="You are a helpful assistant for parsing resume.",
+            # sys_prompt="You are a helpful assistant for parsing resume.",
             max_tokens=100
         )
 
-    def parse(self, file_path: str, json_structure: dict = None) -> Dict:
+    def parse(self, file_path: str) -> Dict:
         if file_path.endswith('.pdf'):
             text = self._extract_text_from_pdf(file_path)
         elif file_path.endswith('.docx'):
@@ -23,10 +23,7 @@ class ResumeParser:
         else:
             raise ValueError("Unsupported file format")
 
-        if json_structure is None:
-            json_structure = self.default_json_structure
-
-        formatted_data = self.feature_extrator_agent.extract_features(text, json_structure)
+        formatted_data = self.feature_extrator_agent.extract_features(text)
         return formatted_data
 
     @staticmethod
