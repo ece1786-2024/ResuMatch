@@ -1,9 +1,14 @@
-from resume_parser.resume_parser import ResumeParser
+from system_ui.ui import UI
 from datasets.data import ResumeFeaturesDataset, JobResumeMatchesDataset, LocationValidationDataset, ResumeValidationDataset
 
 model = "gpt-4o"
 
-parser = ResumeParser()
-resume_path = "C:/Users/Rafay/Downloads/rafay_kalim_fin.pdf" # load your resume here
-formatted_data = parser.parse(resume_path)
-print("Extracted features:", formatted_data)
+ui = UI()
+def handle_pdf_location_input(pdf_file, location_filter):
+    pdf_file_path = pdf_file.name
+    # Put integration logic here
+    # Whatever you return here will be shown on the UI
+    pass
+
+ui.process_inputs = handle_pdf_location_input
+ui.run()
