@@ -2,3 +2,5 @@ pdfplumber
 python-docx
 openai
 pandas
+sklearn
+matplotlib
