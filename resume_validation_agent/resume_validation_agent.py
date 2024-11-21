@@ -23,18 +23,15 @@ class ResumeValidationAgent(Agent):
 
     def evaluate_dataset(self, df):
         """
-        Evaluate the feature extraction on a given DataFrame for multiple features.
-        Assumes first column is resume_text and all subsequent columns are features.
+        Evaluate the resume validation agent on a given DataFrame.
+        Assumes first column is resume_text and second column is 'label'.
 
-        :param df: DataFrame with columns ['resume_text', feature1, feature2, ...]
-        :return: Dictionary with success rates for each feature
+        :param df: DataFrame with columns ['resume_text', 'label']
+        :return: Success Rate and saves true labels, pred labels, success rate in evaluation_results
         """
         
         # Put resume_text first
         df = df[['resume_text'] + [col for col in df.columns if col != 'resume_text']]
-
-        # Get all columns except the first one (resume_text)
-        label = df['label']
 
         successes = 0
         true_labels = []
