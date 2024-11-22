@@ -5,8 +5,6 @@ from resume_parser.resume_parser import ResumeParser
 from matching_agent.matching_agent import MatchingAgent
 from jobspy import scrape_jobs
 
-# PATH_TO_RESUME = r"G:\job applications\Karanbir.s.brar.pdf"
-
 parser = ResumeParser()
 resume_path = r"G:\job applications\Karanbir.s.brar.pdf" # load your resume here
 formatted_data, resume_text = parser.parse(resume_path)
@@ -35,8 +33,6 @@ jobs = scrape_jobs(
 
 # Save and display the results
 if jobs is not None and not jobs.empty:
-    #print(f"Found {len(jobs)} jobs")
-    #print(jobs.head())
     jobs.to_csv("jobs.csv", quoting=csv.QUOTE_NONNUMERIC, escapechar="\\", index=False)
 else:
     print("No jobs found.")

@@ -81,7 +81,6 @@ class MatchingAgent(Agent):
         success_rate = (correct_predictions / total) * 100 if total > 0 else 0
         print(f"Success rate: {success_rate:.2f}%")
         
-<<<<<<< HEAD
         # Create the confusion matrix
         cm = confusion_matrix(true_labels, predicted_labels, labels=["Good Fit", "Potential Fit", "No Fit"])
 
@@ -101,8 +100,6 @@ class MatchingAgent(Agent):
         print(f"True labels {true_labels}")
         print(f"Predicted labels {predicted_labels}")
         return success_rate
-=======
-        return success_rate
     
     def match_jobs(self,resume_text,df):
         matches=[]
@@ -110,17 +107,12 @@ class MatchingAgent(Agent):
         for index, row in df.iterrows():
             job_description = row['description']
             match_result = self.evaluate_match(resume_text, job_description)
-            match_category = match_result["fit"]
-            matches.append({
-                "Application_link": row["job_url"],
-                "match_category": match_category,
-                "score": match_scores.get(match_category, 0)
-            })
+            match_result = json.loads(match_result)
+            if match_result['result']== "Good Fit":
+                matches.append({
+                    "Application_link": row["job_url"],
+                    "Fit": match_result['result']
+                })
 
-        # Sort matches by score in descending order
-        top_matches = sorted(matches, key=lambda x: x["score"], reverse=True)[:5]
-
-        for job in top_matches:
-            print(f"Match Category: {job['match_category']}, Score: {job['score']}")
-            print(f"application_link: {job['Application_link']}\n")
->>>>>>> 2020dde (integrated.py file in scraper and changes to matching agent, runt the integrated file to run the model instead of main.py)
+        for job in matches:
+            print(f"application_link: {job['Application_link']}, Score: {job['Fit']}\n")
