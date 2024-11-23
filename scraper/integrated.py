@@ -7,10 +7,10 @@ from jobspy import scrape_jobs
 
 parser = ResumeParser()
 resume_path = r"G:\job applications\Karanbir.s.brar.pdf" # load your resume here
-formatted_data, resume_text = parser.parse(resume_path)
+formatted_data = parser.parse(resume_path)
 print("Extracted features:", formatted_data)
 
-
+resume_text= parser._extract_text_from_pdf(resume_path)
 
 formatted_data = json.loads(formatted_data)
 industry = formatted_data.get("industry")
@@ -40,5 +40,5 @@ else:
 df=pd.read_csv('jobs.csv')
 print(df.columns)
 
-ma = MatchingAgent(name="Job Fit Determination", sys_prompt="evaluate if the job descripton a potential match based on resume_text",model="gpt-4o")
+ma = MatchingAgent(name="Job Fit Determination")
 ma.match_jobs(resume_text,df)

@@ -20,7 +20,7 @@ class UI:
             pdf_file_input = gr.File(label="Upload PDF File", file_types=[".pdf"])
             location_input = gr.Textbox(label="Enter Your Desired Location")
             
-            output = gr.Textbox(label="Output")
+            output = gr.HTML(label="Job Matches")
             
             submit_button = gr.Button("Submit")
             submit_button.click(
@@ -29,4 +29,8 @@ class UI:
                 outputs=output
             )
 
-            demo.launch()
+            demo.launch(share=True)
+
+if __name__ == "__main__":
+    ui = UI()
+    ui.run()

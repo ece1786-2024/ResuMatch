@@ -110,9 +110,11 @@ class MatchingAgent(Agent):
             match_result = json.loads(match_result)
             if match_result['result']== "Good Fit":
                 matches.append({
+                    "Title": row["title"],
                     "Application_link": row["job_url"],
                     "Fit": match_result['result']
                 })
 
         for job in matches:
             print(f"application_link: {job['Application_link']}, Score: {job['Fit']}\n")
+        return matches
