@@ -2,5 +2,6 @@ pdfplumber
 python-docx
 openai
 pandas
-sklearn
+scikit-learn
 matplotlib
+python-jobspy
