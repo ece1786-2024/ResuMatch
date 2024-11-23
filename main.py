@@ -2,6 +2,7 @@ import csv
 import json
 import pandas as pd
 from resume_parser.resume_parser import ResumeParser
+from location_agent.verify import VerifyLocation
 from matching_agent.matching_agent import MatchingAgent
 from jobspy import scrape_jobs
 from system_ui.ui import UI
@@ -23,20 +24,31 @@ def handle_pdf_location_input(pdf_file, location_filter):
         industry = formatted_data.get("industry", "general")
         experience_level = formatted_data.get("experience level", "entry-level")
         location = location_filter.strip()  # Use the provided location filter
-
+        location_agent = VerifyLocation(name="Location Verifier")
+        location_to_verify = location
+        result = location_agent.extract_city_country(location_to_verify)
+        #result= json.loads(result)
+        location= result["location"]
+        country=result["country"]
+        if location == 'unknown':
+            print("the location does not exist")
+        else:
+            
+        # location= result.get("location")
+        # country=result.get("country")
         # Create search terms dynamically
-        search_term = f"{experience_level} {industry}".lower()
-
-        # Scrape jobs
-        jobs = scrape_jobs(
-            site_name=["indeed", "linkedin", "zip_recruiter", "glassdoor", "google"],
-            search_term=search_term,
-            google_search_term=f"{search_term} jobs near {location}",
-            location=location,
-            results_wanted=20,
-            hours_old=72,
-            country_indeed="USA",
-        )
+            search_term = f"{experience_level} {industry}".lower()
+            
+            # Scrape jobs
+            jobs = scrape_jobs(
+                site_name=["indeed", "linkedin", "zip_recruiter", "glassdoor", "google"],
+                search_term=search_term,
+                google_search_term=f"{search_term} jobs near {location}",
+                location=location,
+                results_wanted=20,
+                hours_old=72,
+                country_indeed=f"{country}",
+            )
 
         # Save and display the results
         if jobs is not None and not jobs.empty:
