@@ -8,14 +8,117 @@ class MatchingAgent(Agent):
     def __init__(self, 
                  name,
                  model="gpt-4o", 
-                 max_tokens=15,
+                 max_tokens=1000,
                  response_format={"type": "json_object"},
-                 temperature=0.5):
+                 temperature=0.15):
         
         super().__init__(name, model, max_tokens, response_format, temperature)
         
         self.match_categories = ["Good Fit", "Potential Fit", "No fit"]
-        self.sys_prompt = "Please respond in JSON format {'result' : 'PREDICTION'}. Determine if the resume is a Good Fit, Potential Fit, or No Fit. Determing if the resume is a Good Fit, Potential Fit, or No Fit. Only output one of, Good Fit, Potential Fit, or No Fit"
+
+        # ### Experiment 2        
+        # self.sys_prompt = """Please respond in JSON format {'result' : 'PREDICTION'}.
+        
+        #                 You are a fantastic freelance recruiter and you specialize in finding the right fit for resumes and jobs.
+                        
+        #                 I'll provide you with a Resume and Job Description.
+        #                 Determine if the resume is a Good Fit, Potential Fit, or No Fit. 
+                        
+        #                 A Good Fit is one where the resume and experience closely align and have many matching skills and experiences.
+        #                 A Potential Fit is one where there are some matching traits, but not as many as a Good Fit.
+        #                 No Fit is one where there are not a lot of matching traits, if at all, not suited for the role.
+                        
+                        
+        #                 Only output one of, Good Fit, Potential Fit, or No Fit """
+        
+        ### Experiment 3
+        # self.sys_prompt = """Please respond in JSON format {'result' : 'PREDICTION'}.
+
+        #         You are a fantastic freelance recruiter and you specialize in finding the right fit for resumes and jobs.
+                
+        #         I'll provide you with a Resume and Job Description.
+        #         Determine if the resume is a Good Fit, Potential Fit, or No Fit for the job description. 
+                
+        #         1. Good Fit:
+        #         A "Good Fit" indicates that the candidate's qualifications, skills, and experiences closely align with the requirements of the job description. The resume showcases relevant work experience, education, and skills that match the job's key responsibilities and desired qualifications. The candidate demonstrates a strong potential to excel in the role and contribute positively to the organization.
+                
+        #         2. Potential Fit:
+        #         A "Potential Fit" suggests that the candidate possesses some relevant skills and experiences that align with the job description, but there are notable gaps or less direct relevance. The resume may include transferable skills or experiences that could be beneficial, but the candidate may lack specific qualifications or experience that are critical for the role. This category indicates that the candidate could be trained or developed into a suitable candidate with the right support.
+                
+        #         3. No Fit:
+        #         A "No Fit" means that the candidate's qualifications, skills, and experiences do not align with the job description. The resume lacks relevant experience, education, or skills that are necessary for the role. There may be significant discrepancies between what the job requires and what the candidate offers, indicating that the candidate is unlikely to succeed in the position without substantial retraining or a change in career direction.
+                
+        #         Only output one of, Good Fit, Potential Fit, or No Fit """
+        
+        ### Experiemnt 4 (7)
+        # self.sys_prompt = """Please respond in JSON format {'result' : 'PREDICTION'}.
+
+        #         You are a fantastic freelance recruiter and you specialize in finding the right fit for resumes and jobs. You excel at finding if resumes are good fits for job descriptions. 
+        #         You are able to determine if there's overlap indicating a good fit. If there's some overlap indicating a potential fit. And if there's absolutely no overlap indicating no fit.
+                
+        #         I'll provide you with a Resume and Job Description.
+        #         Determine if the resume is a Good Fit, Potential Fit, or No Fit for the job description. 
+                
+        #         1. Good Fit:
+        #         A "Good Fit" indicates that the candidate aligns with the job description. 
+        #         Output "Good Fit" if theres some overlapping traits between the resume and job description.
+                
+        #         2. Potential Fit:
+        #         A "Potential Fit" suggests that the candidate possesses some relevant skills and experiences that align with the job description, but there are notable gaps or less direct relevance.
+        #         Output "Potential Fit" if there's some relation between the resume and job description.
+                
+        #         3. No Fit:
+        #         A "No Fit" means that the candidate's qualifications, skills, and experiences do not align with the job description. 
+        #         Only output "No Fit" if the resume has absolutely nothing to do with the job description.
+                
+        #         Only output one of, Good Fit, Potential Fit, or No Fit """
+                
+        
+        # ### Experiemnt 5 (8)
+        # self.sys_prompt = """Please respond in JSON format {'result' : 'PREDICTION'}.
+
+        #         You are a fantastic freelance recruiter and you specialize in finding the right fit for resumes and jobs. You excel at finding if resumes are good fits for job descriptions. 
+        #         You are able to determine if there's overlap indicating a good fit. If there's some overlap indicating a potential fit. And if there's absolutely no overlap indicating no fit.
+                
+        #         I'll provide you with a Resume and Job Description.
+        #         Determine if the resume is a Good Fit, Potential Fit, or No Fit for the job description. 
+                
+        #         1. Good Fit:
+        #         A "Good Fit" indicates that the candidate aligns with the job description. 
+        #         Output "Good Fit" if half or more than half the job description is covered by the resume
+                
+        #         2. Potential Fit:
+        #         A "Potential Fit" suggests that the resume somewhat aligns with the job description, but there's some gaps.
+        #         Output "Potential Fit" if about half or less of the job description is covered by the resume.
+                
+        #         3. No Fit:
+        #         A "No Fit" means that the candidate's qualifications, skills, and experiences do not align with the job description. 
+        #         Output "No Fit" if there's near no items in the job description covered by the resume.
+                
+        #         Only output one of, Good Fit, Potential Fit, or No Fit """
+        
+        ## Experiment 6, (9)
+        self.sys_prompt = """Please respond in JSON format {'result' : 'PREDICTION'}.
+
+                You are a fantastic freelance recruiter and you specialize in finding the right fit for resumes and jobs. You excel at finding if resumes are good fits for job descriptions. 
+                You are able to determine if there's overlap indicating a good fit. If there's some overlap indicating a potential fit. And if there's absolutely no overlap indicating no fit.
+                
+                I'll provide you with a Resume and Job Description.
+                Determine if the resume is a Good Fit, Potential Fit, or No Fit for the job description. 
+                
+                1. Good Fit:
+                A "Good Fit" indicates that the candidate aligns with the job description. 
+                Output "Good Fit" if theres some overlapping traits between the resume and job description.
+                
+                2. Potential Fit:
+                A "Potential Fit" suggests that the candidate possesses some relevant skills and experiences that align with the job description, but there are notable gaps or less direct relevance.
+                Output "Potential Fit" if there's some relation between the resume and job description.
+                
+                3. No Fit:
+                A "No Fit" means that the candidate's qualifications, skills, and experiences do not align with the job description. 
+                Only output "No Fit" if the resume has absolutely nothing to do with the job description.
+                
+                Only output one of, Good Fit, Potential Fit, or No Fit """
 
     def evaluate_match(self, resume_text, job_description):
         """
@@ -25,25 +128,27 @@ class MatchingAgent(Agent):
         :param job_description: The text content of the job description
         :return: Dictionary containing the match evaluation
         """
-        prompt = f"Here's the Resume:{resume_text}           Here's the Job Description:{job_description}"
+        # Summarize the resume text
+        resume_summary = self.generate_response([{"role": "user", "content": f"Please breifly summarize the following resume in JSON format:\n{resume_text}"}])
+        
+        # # Summarize the job description text
+        job_description_summary = self.generate_response([{"role": "user", "content": f"Please breifly summarize the following job description in JSON format:\n{job_description}"}])
 
-        messages=[
-                {"role": "system", "content": self.sys_prompt},
-                {"role": "user", "content": prompt}
-            ]
+
+        # print(resume_summary)
+        
+        # print(job_description_summary)        
+        # Prepare the prompt for the main evaluation
+        prompt = f"Here's the  Resume:\n{resume_summary}\n\nHere's the  Job Description:\n{job_description_summary}"
+
+        messages = [
+            {"role": "system", "content": self.sys_prompt},  # You can keep this if needed for the main evaluation
+            {"role": "user", "content": prompt}
+        ]
+        
         response = self.generate_response(messages)
         
-        # Process the response to determine the match category
-        # match_result = self._process_response(response)
         return response
-
-    # def _process_response(self, response):
-    #     """
-    #     Process the GPT response to extract the match category
-    #     """
-    #     # Could be additional logic for processing the output, though the output format
-    #     # "Good Fit", "Potential Fit", "No fit" should be straight forward for gpt
-    #     return {"fit": response["content"]}
 
     def evaluate_dataset(self, df):
         """
@@ -67,6 +172,7 @@ class MatchingAgent(Agent):
             expected_fit = row['label']
             
             match_result = self.evaluate_match(resume_text, job_description)
+
             json_response = json.loads(match_result)
             print(json_response)
             
@@ -76,6 +182,7 @@ class MatchingAgent(Agent):
             
             if json_response['result'] == expected_fit:
                 correct_predictions += 1
+            
             
 
         success_rate = (correct_predictions / total) * 100 if total > 0 else 0
