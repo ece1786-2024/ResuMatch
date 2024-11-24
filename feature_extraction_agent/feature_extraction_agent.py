@@ -9,7 +9,7 @@ class FeatureExtractionAgent(Agent):
     def __init__(self, 
                  name, 
                 #  sys_prompt, 
-                 model="gpt-4o", 
+                 model="gpt-4o-mini", 
                  max_tokens=30,
                  response_format={"type": "json_object"},
                  temperature=1.0):
@@ -23,7 +23,7 @@ class FeatureExtractionAgent(Agent):
 
     def extract_features(self, text):
        
-        prompt = f"Extract the following information from the text and format it into the specified JSON, four options for eperience level are entry, junior, senior, executive. The industry should reflect where their expertise and capabilities are most applicable or valuable, instead of the industry the company is in" \
+        prompt = f"Extract the following information from the text and format it into the specified JSON, four options for experience level are entry, junior, senior, executive (must be lower case). Options for industries are: Engineering,IT,Consulting,Sales and Marketing,Management,HR,Finance,Software Development,Construction,Aviation,Healthcare,Arts and Media,Apparel,Automotive,Food Services,Advocate,Agriculture,Customer Service " \
                  f" structure:\n\nText: {text}\n\nExpected JSON Structure: {self.json_structure}"
 
         messages=[
@@ -47,10 +47,10 @@ class FeatureExtractionAgent(Agent):
         
         # Put resume_text first
         df = df[['resume_text'] + [col for col in df.columns if col != 'resume_text']]
-
+    
         # Get all columns except the first one (resume_text)
         feature_columns = df.columns[1:]
-
+        
         success_rates = {feature: 0 for feature in feature_columns}
         true_labels = {feature: [] for feature in feature_columns}
         predicted_labels = {feature: [] for feature in feature_columns}
@@ -59,8 +59,8 @@ class FeatureExtractionAgent(Agent):
 
         for index, row in tqdm(df.iterrows()):
             resume_text = row[df.columns[0]]  # Get resume text from first column
-            
             extracted_features = self.extract_features(resume_text)
+            print(extracted_features)
             extracted_features = ast.literal_eval(extracted_features)
 
             for feature in feature_columns:
