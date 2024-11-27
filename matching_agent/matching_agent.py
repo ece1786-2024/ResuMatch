@@ -8,7 +8,7 @@ class MatchingAgent(Agent):
     def __init__(self, 
                  name,
                  model="gpt-4o", 
-                 max_tokens=1000,
+                 max_tokens=2500,
                  response_format={"type": "json_object"},
                  temperature=0.15):
         
