@@ -45,7 +45,7 @@ python -m  matching_agent.agent_evaluation
 
 # For evluating the feature_extraction_agent
 ```
-ResuMatch-1>python -m feature_extraction_agent.evaluate_agent
+python -m feature_extraction_agent.evaluate_agent
 ```
 
 
