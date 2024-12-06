@@ -1,15 +1,15 @@
 import pandas as pd
 from openai import OpenAI
 import os
+from dotenv import load_dotenv
 import re
-# Get the directory of the current script (categorize_industries.py)
-script_dir = os.path.dirname(os.path.realpath(__file__))
 
-# Construct the full relative path to the 'api-key.txt' file
-api_key_path = os.path.join(script_dir, '..', 'api-key.txt')
-with open(api_key_path, 'r') as f:
-  api_key = f.read()
-client = OpenAI(api_key=api_key)
+# Load environment variables from .env file
+load_dotenv()
+
+# Initialize OpenAI client with API key from environment variables
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
 #def categorize_industries(df):
 def categorize_industries(industry_counts):
     # Extract the industries (index of the Series)

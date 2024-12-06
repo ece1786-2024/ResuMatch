@@ -20,9 +20,15 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-# OpenAI API Key
+# OpenAI API KEY
 
-Put a file called `api-key.txt` in this folder with your API key in it.
+In the base dir, create a file, .env and paste in
+
+```
+OPENAI_API_KEY=YOUR_API_KEY
+```
+
+
 
 # For Resume Parsing
 ```

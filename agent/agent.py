@@ -1,10 +1,12 @@
 from openai import OpenAI
+from dotenv import load_dotenv
+import os
 
-# Replace 'YOUR_API_KEY' with your actual OpenAI API key
-with open('api-key.txt', 'r') as f:
-  api_key = f.read()
+# Load environment variables from .env file
+load_dotenv()
 
-client = OpenAI(api_key=api_key)
+# Get API key from environment variables
+client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 class Agent:
     def __init__(self, 
@@ -13,7 +15,7 @@ class Agent:
                  max_tokens=100,
                  response_format={"type": "json_object"},
                  temperature=0.5):
-        
+        print(temperature)
         self.name = name
         self.model = model
         self.max_tokens = max_tokens
