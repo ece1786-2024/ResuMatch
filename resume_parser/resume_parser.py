@@ -6,24 +6,25 @@ import pdfplumber
 from typing import Dict
 from feature_extraction_agent.feature_extraction_agent import FeatureExtractionAgent
 
-
 class ResumeParser:
-    def __init__(self):        
+    def __init__(self, file_path):        
         self.feature_extrator_agent = FeatureExtractionAgent(
             name="feature_extractor",
             # sys_prompt="You are a helpful assistant for parsing resume.",
             max_tokens=100
         )
-
-    def parse(self, file_path: str) -> Dict:
+        
+        # Parse resume file to text - keep object var of text
         if file_path.endswith('.pdf'):
-            text = self._extract_text_from_pdf(file_path)
+            self.text = self._extract_text_from_pdf(file_path)
         elif file_path.endswith('.docx'):
-            text = self._extract_text_from_docx(file_path)
+            self.text = self._extract_text_from_docx(file_path)
         else:
             raise ValueError("Unsupported file format")
 
-        formatted_data = self.feature_extrator_agent.extract_features(text)
+    def extract_resume_features(self,) -> Dict:
+        # Extract features
+        formatted_data = self.feature_extrator_agent.extract_features(self.text)
         return formatted_data
 
     @staticmethod
