@@ -6,3 +6,4 @@ scikit-learn
 matplotlib
 gradio
 python-jobspy
+jobspy

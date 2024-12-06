@@ -182,8 +182,6 @@ class MatchingAgent(Agent):
             
             if json_response['result'] == expected_fit:
                 correct_predictions += 1
-            
-            
 
         success_rate = (correct_predictions / total) * 100 if total > 0 else 0
         print(f"Success rate: {success_rate:.2f}%")
@@ -209,19 +207,25 @@ class MatchingAgent(Agent):
         return success_rate
     
     def match_jobs(self,resume_text,df):
+        
+        # Create a matches array to store best fit jobs
         matches=[]
-        match_scores = {"Good Fit": 3, "Potential Fit": 2, "No fit": 1}
-        for index, row in df.iterrows():
+
+        # Go through all of the jobs that were scraped and now in the df
+        for _, row in df.iterrows():
+            
             job_description = row['description']
+            
             match_result = self.evaluate_match(resume_text, job_description)
             match_result = json.loads(match_result)
-            if match_result['result']== "Good Fit":
+            
+            # If it's a good fit, save it to our list
+            if match_result['result'] == "Good Fit":
                 matches.append({
                     "Title": row["title"],
                     "Application_link": row["job_url"],
                     "Fit": match_result['result']
                 })
-
-        for job in matches:
-            print(f"application_link: {job['Application_link']}, Score: {job['Fit']}\n")
+                print(f"Application Link: {row['job_url']}")
+                            
         return matches
