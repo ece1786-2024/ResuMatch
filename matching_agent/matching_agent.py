@@ -162,8 +162,8 @@ class MatchingAgent(Agent):
         true_labels = []
         predicted_labels = []
 
-        for index, row in df.iterrows():
-            print(index)
+        # Add progress bar
+        for _, row in tqdm(df.iterrows(), total=total, desc="Evaluating matches"):
             resume_text = row['resume_text']
             job_description = row['job_description_text']
             expected_fit = row['label']
@@ -171,7 +171,7 @@ class MatchingAgent(Agent):
             match_result = self.evaluate_match(resume_text, job_description)
 
             json_response = json.loads(match_result)
-            print(json_response)
+            # print(json_response)
             
             # Collect true and predicted labels
             true_labels.append(expected_fit)

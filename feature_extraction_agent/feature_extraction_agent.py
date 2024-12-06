@@ -56,11 +56,13 @@ class FeatureExtractionAgent(Agent):
         predicted_labels = {feature: [] for feature in feature_columns}
         
         total = len(df)
+        print(f"\nEvaluating {total} resumes...")
 
-        for index, row in tqdm(df.iterrows()):
+        # Add progress bar
+        for _, row in tqdm(df.iterrows(), total=total, desc="Extracting features"):
             resume_text = row[df.columns[0]]  # Get resume text from first column
             extracted_features = self.extract_features(resume_text)
-            print(extracted_features)
+            # print(extracted_features)
             extracted_features = ast.literal_eval(extracted_features)
 
             for feature in feature_columns:
