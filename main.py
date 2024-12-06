@@ -2,41 +2,42 @@ import csv
 import json
 import pandas as pd
 from resume_parser.resume_parser import ResumeParser
-from location_agent.verify import VerifyLocation
+from location_agent.location_agent_verify import VerifyLocation
 from matching_agent.matching_agent import MatchingAgent
 from jobspy import scrape_jobs
 from system_ui.ui import UI
-from datasets.data import ResumeFeaturesDataset, JobResumeMatchesDataset, LocationValidationDataset, ResumeValidationDataset
 
-model = "gpt-4o"
-
-ui = UI()
-def handle_pdf_location_input(pdf_file, location_filter):
+def resumatch(pdf_file, location_filter):
     try:
-        pdf_file_path = pdf_file.name
-        parser = ResumeParser()
-        formatted_data = parser.parse(pdf_file_path)
+        
+        ### Perform Resume parsing
+        pdf_file_path = pdf_file.name # Get pdf location
+        
+        resume_parser = ResumeParser(pdf_file_path) # Init the resume parser, which converts to text in init
+        resume_text = resume_parser.text # Assign resume test
+        
+        formatted_data = resume_parser.extract_resume_features()
         print("Extracted features:", formatted_data)
 
-        resume_text = parser._extract_text_from_pdf(pdf_file_path)
-
+        # Parse the resume features
         formatted_data = json.loads(formatted_data)
+        
         industry = formatted_data.get("industry", "general")
         experience_level = formatted_data.get("experience level", "entry-level")
-        location = location_filter.strip()  # Use the provided location filter
+        
+        # Parse location and verify via loc. verif agent
         location_agent = VerifyLocation(name="Location Verifier")
-        location_to_verify = location
-        result = location_agent.extract_city_country(location_to_verify)
-        #result= json.loads(result)
-        location= result["location"]
-        country=result["country"]
-        if location == 'unknown':
-            print("the location does not exist")
+        result = location_agent.extract_city_country(location_filter.strip()) # Verify the given location
+        
+        
+        location = result.get("location", "unknown")
+        country = result.get("country", "unknown")
+        
+        if location == "unknown" or country == "unknown":
+            print("ERROR: The provided location could not be verified or does not exist.")
         else:
-            
-        # location= result.get("location")
-        # country=result.get("country")
-        # Create search terms dynamically
+
+            # Create search terms dynamically
             search_term = f"{experience_level} {industry}".lower()
             
             # Scrape jobs
@@ -57,12 +58,11 @@ def handle_pdf_location_input(pdf_file, location_filter):
             return "No jobs found for the given criteria."
 
         df = pd.read_csv("jobs.csv")
-        print("Job DataFrame Columns:", df.columns)
 
         # Matching agent to match jobs with the resume
         ma = MatchingAgent(name="Job Fit Determination")
         matches = ma.match_jobs(resume_text, df)
-
+    
         if matches:
             links = [
                 f'<a href="{match["Application_link"]}" target="_blank">{match["Title"]}</a>'
@@ -72,9 +72,12 @@ def handle_pdf_location_input(pdf_file, location_filter):
             return "<br>".join(links)
         else:
             return "No matching jobs found."
+    
+    # If any error is encountered in the system, throw an erorr and shut down
     except Exception as e:
         print(f"Error: {e}")
         return f"An error occurred: {e}"
 
-ui.process_inputs = handle_pdf_location_input
+ui = UI()
+ui.process_inputs = resumatch
 ui.run()

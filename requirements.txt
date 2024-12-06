@@ -4,4 +4,7 @@ openai
 pandas
 scikit-learn
 matplotlib
+gradio
 python-jobspy
+jobspy
+tqdm

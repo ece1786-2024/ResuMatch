@@ -3,6 +3,7 @@ import json
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 import pandas as pd
+from tqdm import tqdm
 
 class MatchingAgent(Agent):
     def __init__(self, 
@@ -133,11 +134,7 @@ class MatchingAgent(Agent):
         
         # # Summarize the job description text
         job_description_summary = self.generate_response([{"role": "user", "content": f"Please breifly summarize the following job description in JSON format:\n{job_description}"}])
-
-
-        # print(resume_summary)
-        
-        # print(job_description_summary)        
+     
         # Prepare the prompt for the main evaluation
         prompt = f"Here's the  Resume:\n{resume_summary}\n\nHere's the  Job Description:\n{job_description_summary}"
 
@@ -165,8 +162,8 @@ class MatchingAgent(Agent):
         true_labels = []
         predicted_labels = []
 
-        for index, row in df.iterrows():
-            print(index)
+        # Add progress bar
+        for _, row in tqdm(df.iterrows(), total=total, desc="Evaluating matches"):
             resume_text = row['resume_text']
             job_description = row['job_description_text']
             expected_fit = row['label']
@@ -174,7 +171,7 @@ class MatchingAgent(Agent):
             match_result = self.evaluate_match(resume_text, job_description)
 
             json_response = json.loads(match_result)
-            print(json_response)
+            # print(json_response)
             
             # Collect true and predicted labels
             true_labels.append(expected_fit)
@@ -182,8 +179,6 @@ class MatchingAgent(Agent):
             
             if json_response['result'] == expected_fit:
                 correct_predictions += 1
-            
-            
 
         success_rate = (correct_predictions / total) * 100 if total > 0 else 0
         print(f"Success rate: {success_rate:.2f}%")
@@ -208,20 +203,23 @@ class MatchingAgent(Agent):
         print(f"Predicted labels {predicted_labels}")
         return success_rate
     
-    def match_jobs(self,resume_text,df):
-        matches=[]
-        match_scores = {"Good Fit": 3, "Potential Fit": 2, "No fit": 1}
-        for index, row in df.iterrows():
+    def match_jobs(self, resume_text, df):
+        matches = []
+        total_jobs = len(df)
+        print(f"\nParsing {total_jobs} jobs...")
+        
+        for _, row in tqdm(df.iterrows(), total=total_jobs, desc="Matching Jobs"):
             job_description = row['description']
             match_result = self.evaluate_match(resume_text, job_description)
             match_result = json.loads(match_result)
-            if match_result['result']== "Good Fit":
+            
+            # If it's a good fit, save it to our list
+            if match_result['result'] == "Good Fit":
                 matches.append({
                     "Title": row["title"],
                     "Application_link": row["job_url"],
                     "Fit": match_result['result']
                 })
-
-        for job in matches:
-            print(f"application_link: {job['Application_link']}, Score: {job['Fit']}\n")
+                print(f"Application Link: {row['job_url']}")
+                        
         return matches
