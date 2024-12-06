@@ -15,7 +15,7 @@ class UI:
 
     def run(self):
         with gr.Blocks() as demo:
-            gr.Markdown("# Resumatch")
+            gr.Markdown("# ResuMatch")
             
             pdf_file_input = gr.File(label="Upload PDF File", file_types=[".pdf"])
             location_input = gr.Textbox(label="Enter Your Desired Location")
