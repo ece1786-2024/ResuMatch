@@ -15,7 +15,6 @@ class Agent:
                  max_tokens=100,
                  response_format={"type": "json_object"},
                  temperature=0.5):
-        print(temperature)
         self.name = name
         self.model = model
         self.max_tokens = max_tokens

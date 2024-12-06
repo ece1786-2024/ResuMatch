@@ -7,3 +7,4 @@ matplotlib
 gradio
 python-jobspy
 jobspy
+tqdm

@@ -58,7 +58,6 @@ def resumatch(pdf_file, location_filter):
             return "No jobs found for the given criteria."
 
         df = pd.read_csv("jobs.csv")
-        print("Job DataFrame Columns:", df.columns)
 
         # Matching agent to match jobs with the resume
         ma = MatchingAgent(name="Job Fit Determination")

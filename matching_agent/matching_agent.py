@@ -3,6 +3,7 @@ import json
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 import pandas as pd
+from tqdm import tqdm
 
 class MatchingAgent(Agent):
     def __init__(self, 
@@ -133,11 +134,7 @@ class MatchingAgent(Agent):
         
         # # Summarize the job description text
         job_description_summary = self.generate_response([{"role": "user", "content": f"Please breifly summarize the following job description in JSON format:\n{job_description}"}])
-
-
-        # print(resume_summary)
-        
-        # print(job_description_summary)        
+     
         # Prepare the prompt for the main evaluation
         prompt = f"Here's the  Resume:\n{resume_summary}\n\nHere's the  Job Description:\n{job_description_summary}"
 
@@ -206,16 +203,13 @@ class MatchingAgent(Agent):
         print(f"Predicted labels {predicted_labels}")
         return success_rate
     
-    def match_jobs(self,resume_text,df):
+    def match_jobs(self, resume_text, df):
+        matches = []
+        total_jobs = len(df)
+        print(f"\nParsing {total_jobs} jobs...")
         
-        # Create a matches array to store best fit jobs
-        matches=[]
-
-        # Go through all of the jobs that were scraped and now in the df
-        for _, row in df.iterrows():
-            
+        for _, row in tqdm(df.iterrows(), total=total_jobs, desc="Matching Jobs"):
             job_description = row['description']
-            
             match_result = self.evaluate_match(resume_text, job_description)
             match_result = json.loads(match_result)
             
@@ -227,5 +221,5 @@ class MatchingAgent(Agent):
                     "Fit": match_result['result']
                 })
                 print(f"Application Link: {row['job_url']}")
-                            
+                        
         return matches
