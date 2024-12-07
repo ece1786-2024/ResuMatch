@@ -8,3 +8,4 @@ gradio
 python-jobspy
 jobspy
 tqdm
+python-dotenv
