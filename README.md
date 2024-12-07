@@ -51,7 +51,7 @@ This should print out
 * Running on public URL: https://87420aa599faae7683.gradio.live
 ```
 
-Which runs the Graadio UI in the browswer at localhost, just click on the link to get job matching!
+Which runs the Gradio UI in the browser at localhost, just click on the link to get job matching!
 
 
 # Agent Evaluation
@@ -60,14 +60,19 @@ Though not needed to run the main system, here's some helpful functionality we b
 
 These modules import out data from the `/datasets/local_datasets` folder and performs full evaluation on the respective datasets. With overall accuracy reporting and confusion matrix generation.
 
-## For evluating the matching_agent
+## For evaluating the matching_agent
 ```
 python -m  matching_agent.agent_evaluation
 ```
 
-## For evluating the feature_extraction_agent
+## For evaluating the feature_extraction_agent
 ```
 python -m feature_extraction_agent.evaluate_agent
+```
+
+## For evaluating the resume_validation_agent
+```
+python -m resume_validation_agent.evaluate_agent
 ```
 
 
