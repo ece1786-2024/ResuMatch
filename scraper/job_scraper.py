@@ -6,7 +6,7 @@ jobs = scrape_jobs(
     search_term="software engineer",
     google_search_term="software engineer jobs near San Francisco, CA since yesterday",
     location="San Francisco, CA",
-    results_wanted=20,
+    results_wanted=10,
     hours_old=72,
     country_indeed='USA',
     
