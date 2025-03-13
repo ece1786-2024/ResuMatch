@@ -9,4 +9,4 @@ ResumeFeaturesDataset = Dataset('ResumeFeatures')
 JobResumeMatchesDataset = Dataset('JobResumeMatches')
 LocationValidationDataset = Dataset('Locations')
 ResumeValidationDataset = Dataset('Resumes')
-
+UpdatedResumeFeaturesDateset = Dataset('Updated_ResumeFeatures')

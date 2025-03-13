@@ -43,6 +43,9 @@ pip install -r requirements.txt
 python -m  matching_agent.agent_evaluation
 ```
 
-
+# For evluating the feature_extraction_agent
+```
+python -m feature_extraction_agent.evaluate_agent
+```
 
 
